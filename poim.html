@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title></title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+<style type="text/css">
+	.korz{
+		width: 150px;
+		position: absolute;
+		top: 80%;
+		left: 43%;
+		transition: 1s;
+	}
+	.apple{
+		height: 75px;
+		position: absolute;
+		display: none;
+		top: 0%;
+		left: 0%;
+		transition: 3s;
+	}
+	.game{
+		display: none;
+	}
+	.start {
+		margin-top: 150px;
+		margin-bottom: 237px;
+		background:#96b5b0;	
+		opacity: 0.8;
+	}
+	.fin {
+		margin-top: 130px;
+		margin-bottom: 194px;
+		background:#96b5b0;	
+		opacity: 0.8;
+		display: none;
+	}
+	body {
+		background: url(poim/bg.jpg);
+		background-size: 100% 100%;
+		font-family: shr;
+	}
+	@font-face {
+		font-family: shr;
+		src: url(shrift.ttf);
+	}
+	</style>
+</head>
+<body>
+<!-- > Шапка <-->
+<div id="header" class="col-12 pt-2 pb-2" style="background: #170f01; color: white">
+  <div class="row">
+    <div class="col-8 text-center">
+      <div class="col-2 pt-2">
+        <a class="navbar-brand" href="index.html" style="color: white; font-size: 20px;">JAVASCRIPT</a>
+      </div>
+    </div>
+    <div class="col-2"></div>
+    
+   <!-- > Ссылки на шапке <--> 
+    <div class="col-2 pt-1">
+    <div class="row">
+     <div class="col-4"></div>
+     <div class="col-8">
+      <ul class="nav nav-pills">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false" style="color: white">Мои игры</a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" href="test.html">Тест</a></li>
+            <li><a class="dropdown-item" href="poim.html">Яблоки</a></li>
+          </ul>
+        </li>
+      </ul>
+     </div>
+    </div>
+    </div>
+    <!-- > Крнец ссылки на шапке <-->
+  </div>
+  
+</div>
+<!-- > конец Шапка <-->
+
+<div class="start col-8 pt-4 pb-4 mx-auto">
+	<h1 align="center">Игра "Поймай яблоки"</h1>
+		
+	<div class="col-8 mx-auto mt-4">
+		<h5>Твоя задача: поймать все яблоки корзинкой</h5>
+		<h5>Управление: для перемещения корзинки нажимай на стрелки на клавиатуре</h5>
+	</div>
+	<div class="col-12 text-center"><button class="btn btn-success btn_start"><h5 class="mt-1">Начать</h5></button></div>
+		
+</div>
+
+<div class="game">
+	<img src="poim/apple.png" class="apple" style="display: block;">
+	<img src="poim/apple.png" class="apple">
+	<img src="poim/apple.png" class="apple">
+	<img src="poim/apple.png" class="apple">
+	<img src="poim/apple.png" class="apple">
+	<img src="poim/apple.png" class="apple">
+	<img src="poim/apple.png" class="apple">
+	<img src="poim/apple.png" class="apple">
+	<img src="poim/apple.png" class="apple">
+	<img src="poim/apple.png" class="apple">	
+
+	<img src="poim/korz.png" class="korz">
+</div>
+
+<div class="fin col-8 pt-4 pb-4 mx-auto">
+	<h1 align="center">Конец игры!</h1>
+		
+	<div class="col-8 mx-auto mt-4">
+		<h5>Молодец! Ты хорошо справился!</h5>
+		<h5><span class="score_txt"></span>/10</h5>
+	</div>
+	<a href="poim.html"><div class="col-12 text-center mb-3"><button class="btn btn-success"><h5 class="mt-1">Попробовать снова</h5></button></div></a>
+	<a href="index.html"><div class="col-12 text-center"><button class="btn btn-success"><h5 class="mt-1">Вернуться на сайт</h5></button></div></a>
+</div>
+
+	<script type="text/javascript">
+	let apple = document.querySelectorAll(".apple");
+	let korz = document.querySelector(".korz");
+	let korz_left = 43;
+	let uslovie1 = 104;
+	let uslovie2 = 111;
+	let uslovie3 = 0;
+	let uslovie4 = 0;		
+	let score = 0;
+	let score_txt = document.querySelector(".score_txt");
+	let tope = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	let leftt = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	let j = 1;
+	let poimano_txt = document.querySelector(".poimano");
+	let game = document.querySelector(".game");
+	let start = document.querySelector(".start")
+	let btn_start = document.querySelector(".btn_start");
+	let fin = document.querySelector(".fin")
+
+	btn_start.onclick = function(){
+		start.style.display = 'none';
+		game.style.display = 'block';
+
+		document.body.style.backgroundSize = "100% 1200%";
+
+		//Управление
+		document.addEventListener('keydown', function(event) {
+  			if (event.code == 'ArrowRight') {
+		    	korz_left = korz_left + 5;
+		    	korz.style.left = korz_left + "%";
+		    	uslovie3 = korz_left - 8;
+				uslovie4 = korz_left + 10;
+			}
+		});
+		document.addEventListener('keydown', function(event) {
+  			if (event.code == 'ArrowLeft') {
+		    	korz_left = korz_left - 5;
+		    	korz.style.left = korz_left + "%";
+		    	uslovie3 = korz_left - 8;
+				uslovie4 = korz_left + 10;
+			}
+		});
+		//Рандомайзер
+		let random = function(){
+			let rand = Math.random()*60;
+			let num = Math.round(rand);
+			return num;
+		}
+		//Рандомайзер дает значение нахождения по оси x
+		for (let i = 0; i < leftt.length; i++) {
+			leftt[i] = 80 - random();
+			apple[i].style.left = leftt[i] + "%";			
+		}
+		// Первое яблоко падает
+		let down0 = function(){
+			tope[0] = tope[0] + 8;
+			apple[0].style.top = tope[0] + "%";
+
+			if (tope[0] >= 112) {
+				apple[0].style.display = 'none';
+			}
+			if (tope[0] <= uslovie2 && tope[0] >= uslovie1 && leftt[0] <= uslovie4 && leftt[0] >= uslovie3) {
+				apple[0].style.display = 'none';
+				score = score + 1;
+			}		
+		}			
+		setInterval(down0, 600);				
+		// Появление остальных яблок
+		let poyav = function(j){
+			apple[j].style.display = "block";
+
+			tope[j] = 0;
+			apple[j].style.top = tope[j] + "%";
+
+			//Типа яблоки падают
+			let down = function(){			
+				tope[j] = tope[j] + 8;
+				apple[j].style.top = tope[j] + "%";
+				if (tope[j] >= 112) {
+					apple[j].style.display = "none";
+				}
+				if (tope[j] <= uslovie2 && tope[j] >= uslovie1 && leftt[j] <= uslovie4 && leftt[j] >= uslovie3) {
+					apple[j].style.display = 'none';
+					score = score + 1;
+				}
+			}		
+			setInterval(down, 600);
+		}
+
+		let n = 1
+		let give = function(){
+			poyav(n);
+			n = n + 1;
+		}
+		let stop2 = setInterval(give, 3000);
+
+		let final = function(){
+			game.style.display = 'none';
+			fin.style.display = 'block';
+			document.body.style.backgroundSize = "100% 120%";
+			
+			score_txt.innerHTML = score;
+		}
+		setTimeout(final, 35000);
+	}
+	</script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+</body>
+</html>
